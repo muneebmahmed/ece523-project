@@ -16,19 +16,22 @@ def read_csv(filename):
     data = pd.read_csv(filename, header=0).values
 
     weeklyData = []
+    y = [ None ]
+
     lastWeekDate = datetime.strptime(data[0, 0], "%Y-%m-%d")
-    
     # row: date,open,high,low,close,volume,unadjustedVolume,change,changePercent,vwap,label,changeOverTime
     for row in data[1:]:
         currentDate = datetime.strptime(row[0], "%Y-%m-%d")
-        
         if (currentDate - lastWeekDate).days >= 7:
-            weeklyData.append(row)
+            weeklyData.append(row[4])
+            y.append(row[4])
             lastWeekDate = currentDate
 
-    # TODO: Parse/calculate label, probably inside loop above
-    y = np.zeros(len(weeklyData))
 
-    return np.array(weeklyData), y
+    # To be concise
+    X = np.array(weeklyData[1:])
+    y = np.array(y[1:-1])
 
-print(read_csv('./data/AAPL.csv')[0])
+    return X, y
+
+print(read_csv('./data/AAPL.csv'))
