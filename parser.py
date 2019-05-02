@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import pandas as pd
 import numpy as np
 from datetime import datetime
@@ -34,4 +36,4 @@ def read_csv(filename):
 
     return X, y
 
-print(read_csv('./data/AAPL.csv'))
+#print(read_csv('./data/AAPL.csv'))
