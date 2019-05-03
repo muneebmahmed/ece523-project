@@ -36,7 +36,7 @@ def read_csv(filename):
 
     return X, y
 
-def parse_to_csv(filename):
+def daily_parse(filename):
     """
     Opens and parses/processes csv files to return data and labels
 
@@ -48,16 +48,4 @@ def parse_to_csv(filename):
         y - The labels for each data point
     """
     data = pd.read_csv(f"./data/{filename}.csv", header=0).values
-
-    weeklyData = []
-    lastWeekDate = datetime.strptime(data[0, 0], "%Y-%m-%d")
-    # row: date,open,high,low,close,volume,unadjustedVolume,change,changePercent,vwap,label,changeOverTime
-    for row in data[1:]:
-        currentDate = datetime.strptime(row[0], "%Y-%m-%d")
-        if (currentDate - lastWeekDate).days >= 7:
-            weeklyData.append(row[4])
-            lastWeekDate = currentDate
-
-    pd.DataFrame(weeklyData).to_csv(f"./data/parsed_{filename}.csv", index=False, header=False, mode='w')
-
-parse_to_csv('AAPL')
+    pd.DataFrame(data[:, :5]).to_csv(f"./parsed/{filename}.csv", index=False, header=False, mode='w')
