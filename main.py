@@ -35,6 +35,19 @@ def series_to_supervised(data, n_in=1, n_out=1, dropnan=True):
 		agg.dropna(inplace=True)
 	return agg
 
+def stock_game(prices, predictions, starting_money):
+	money = starting_money
+	stocks = 0
+	for i in range(len(predictions)):
+		if predictions[i] == 1:
+			stocks += money / prices[i]
+			money = 0
+		elif predictions[i] == -1:
+			money += stocks * prices[i]
+			stocks = 0
+	return stocks, money + stocks * prices[len(predictions)]
+
+
 def runRnn(filename):
 	# load dataset
 	dataset = pd.read_csv(f"./parsed/{filename}.csv", header=0, index_col=0)
@@ -106,6 +119,14 @@ def runRnn(filename):
 	
 	#plt.show()
 	plt.savefig("./output/{}.png".format(filename), bbox_inches='tight', dpi=400)
+
+	most_stocks, most_money = stock_game(inv_y, real, 10000)
+	predicted_stocks, predicted_money = stock_game(inv_y, pred, 10000)
+	with open("./output/{}.txt".format(filename), "w") as f:
+		f.write("Possible stocks and money: %.2f\t$%.2f\n" % (most_stocks, most_money))
+		f.write("Predicted stocks and money: %.2f\t$%.2f" % (predicted_stocks, predicted_money))
+	print("Total stocks and money: %.2f\t$%.2f" % (most_stocks, most_money))
+	print("Predicted stocks and money: %.2f\t$%.2f" % (predicted_stocks, predicted_money))
 
 companyList = ['AAPL', 'BA', 'KO', 'MSFT', 'NKE']
 for company in companyList:
