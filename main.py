@@ -113,7 +113,8 @@ def runRnn(filename):
 	plt.title(f"{filename} - RMSE: {round(rmse, 3)}, Direction Prediction Rate: {round(dirPredRate, 3)}")
 	plt.plot(range(len(inv_y)), inv_y, 'b')
 	plt.plot(range(len(inv_yhat)), inv_yhat, 'r')
-	plt.xlabel('Time (Days)')
+	#plt.xlabel('Time (Days)')
+	plt.xlabel('Time (Weeks)')
 	plt.ylabel('Stock Price ($)')
 	plt.legend(['Real', 'Prediction'])
 	
@@ -130,5 +131,6 @@ def runRnn(filename):
 
 companyList = ['AAPL', 'BA', 'KO', 'MSFT', 'NKE']
 for company in companyList:
-	parser.daily_parse(company)
+	#parser.daily_parse(company)
+	parser.weekly_parse(company)
 	runRnn(company)
