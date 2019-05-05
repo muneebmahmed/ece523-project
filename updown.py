@@ -1,3 +1,7 @@
+"""
+This module contains helper functions for analyzing the success of our model's predictions
+
+"""
 
 def up_down(stuff):
     binary = []
