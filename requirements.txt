@@ -1,0 +1,5 @@
+matplotlib==3.0.3
+pandas==0.24.1
+numpy==1.16.2
+Keras==2.2.4
+scikit_learn==0.20.3
